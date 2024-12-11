@@ -15,6 +15,68 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## 权限配置
+
+### iOS 权限配置
+
+在 `ios/Runner/Info.plist` 中添加以下权限描述：
+
+```xml
+<key>NSPhotoLibraryUsageDescription</key>
+<string>需要访问相册以选择视频文件</string>
+<key>NSCameraUsageDescription</key>
+<string>需要访问相机以拍摄视频</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>需要访问麦克风以录制视频</string>
+```
+
+### Android 权限配置
+
+在 `android/app/src/main/AndroidManifest.xml` 中添加以下权限：
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.CAMERA"/>
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+```
+
+## 依赖说明
+
+```yaml
+dependencies:
+  get: ^4.6.6 # 状态管理
+  image_picker: ^1.0.7 # 图片/视频选择
+  video_player: ^2.8.2 # 视频播放
+  permission_handler: ^11.3.0 # 权限处理
+  cupertino_icons: ^1.0.6 # iOS风格图标
+  webview_flutter: ^4.10.0 # WebView支持
+```
+
+## 项目结构
+
+```text
+lib/
+├── common/              # 通用
+│   ├── utils/          # 工具类
+│   ├── widgets/        # 公共组件
+│   └── constants.dart  # 常量
+│
+├── models/             # 数据模型
+│   └── user.dart
+│
+├── pages/             # 页面
+│   ├── home/
+│   ├── mine/
+│   └── login/
+│
+├── services/          # 服务
+│   ├── api.dart      # 网络请求
+│   └── storage.dart  # 本地存储
+│
+└── main.dart         # 入口文件
+```
+
 ## AOT 与 JIT
 
 AOT(Ahead Of Time)编译是在程序运行前将代码编译成机器码，JIT(Just In Time)编译是在程序运行时将代码编译成机器码。
@@ -33,7 +95,7 @@ Flutter 在开发阶段使用 JIT 编译，可以实现热重载(Hot Reload)功�
 
 **与命令式 UI 的区别**
 
-命令式 UI 需要手动操作 UI 元素，而声明式 UI 只需要描述想要的 UI 状态，框架会自动处理 UI 更新。
+命令式 UI 需要手动操作 UI 元素，而声明式 UI 只需要描述想要 ��� UI 状态，框架会自动处理 UI 更新。
 
 ## Widget
 

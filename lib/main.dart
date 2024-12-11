@@ -1,70 +1,37 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'common/theme.dart';
+import 'controllers/navigation_controller.dart';
+import 'controllers/video_controller.dart';
+import 'routes/pages.dart';
+import 'services/storage/storage_service.dart';
 
-void main() {
+void main() async {
+  await initServices();
   runApp(const AstralApp());
+}
+
+Future<void> initServices() async {
+  await Get.putAsync(() => StorageService().init());
 }
 
 class AstralApp extends StatelessWidget {
   const AstralApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Astral',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff4186f5)),
-        useMaterial3: true,
-      ),
-      home: const AstralHomePage(title: 'Astral'),
-    );
-  }
-}
-
-class AstralHomePage extends StatefulWidget {
-  const AstralHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<AstralHomePage> createState() => _AstralHomePageState();
-}
-
-class _AstralHomePageState extends State<AstralHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    return GetCupertinoApp(
+      title: '视频转实况',
+      theme: AppTheme.light,
+      // 默认使用原生动画
+      defaultTransition: Transition.native,
+      initialRoute: AppPages.initial,
+      getPages: AppPages.routes,
+      // 初始化绑定
+      initialBinding: BindingsBuilder(() {
+        Get.put(NavigationController());
+        Get.put(VideoController());
+      }),
     );
   }
 }
