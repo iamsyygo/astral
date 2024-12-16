@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 /// API 配置
 class ApiConfig {
   /// API URL
-  static const String baseUrl = 'http://192.168.99.144:8030';
+  static const String baseUrl = 'http://localhost:3000';
 
   /// 超时时间（秒）
   static const Duration connectTimeout = Duration(seconds: 10);

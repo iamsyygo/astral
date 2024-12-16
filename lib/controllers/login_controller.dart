@@ -1,77 +1,102 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:get/get.dart';
+
 import '../routes/pages.dart';
 import '../services/api/auth_api.dart';
 import '../services/storage/storage_service.dart';
+import 'base/auth_base_controller.dart';
 
-class LoginController extends GetxController {
-  final _authApi = AuthApi();
+class LoginController extends AuthBaseController {
+  final AuthApi _authApi = AuthApi();
+  final StorageService _storage = Get.find<StorageService>();
+
+  LoginController() : super();
+
+  // 表单状态
   final email = ''.obs;
-  final verificationCode = ''.obs;
-  final isLoading = false.obs;
+  final code = ''.obs;
   final currentStep = 0.obs;
+  final countDown = 60.obs;
 
-  Future<void> sendVerificationCode() async {
-    if (!GetUtils.isEmail(email.value)) {
-      Get.snackbar('错误', '请输入有效的邮箱地址');
+  // 计算属性
+  bool get isValidEmail => GetUtils.isEmail(email.value);
+  bool get canSendCode => !state.isLoading && countDown.value >= 60;
+  bool get canSubmitCode => code.value.length == 6 && !state.isLoading;
+
+  // 发送验证码
+  Future<void> sendEmailCode() async {
+    if (!isValidEmail) {
+      setError('请输入有效的邮箱地址');
       return;
     }
 
-    try {
-      isLoading.value = true;
-      final success = await _authApi.sendVerificationCode(email.value);
+    final result = await handleAuthRequest(
+      () => _authApi.sendCodeWithEmail(email.value),
+    );
 
-      if (success) {
-        Get.snackbar(
-          '发送成功',
-          '验证码已发送至您的邮箱',
-          icon: const Icon(
-            CupertinoIcons.checkmark_circle,
-            color: CupertinoColors.systemGreen,
-          ),
-          duration: const Duration(seconds: 2),
-          snackPosition: SnackPosition.TOP,
-        );
-        currentStep.value = 1;
-      } else {
-        Get.snackbar('错误', '发送验证码失败');
-      }
-    } catch (e) {
-      Get.snackbar('错误', '发送验证码失败: $e');
-    } finally {
-      isLoading.value = false;
+    if (result != null) {
+      currentStep.value = 1;
+      startCountDown();
     }
   }
 
-  Future<void> verifyCode() async {
-    if (verificationCode.value.length != 6) {
-      Get.snackbar('错误', '请输入完整验证码');
+  // 处理登录
+  Future<void> handleLogin() async {
+    if (!canSubmitCode) {
+      setError('请输入6位验证码');
       return;
     }
 
-    try {
-      isLoading.value = true;
-      final response = await _authApi.verifyCode(
+    final response = await handleAuthRequest(
+      () => _authApi.loginWithEmail(
         email.value,
-        verificationCode.value,
-      );
-      if (response != null) {
-        await Get.find<StorageService>().saveToken(response['token']);
+        code.value,
+      ),
+    );
+
+    if (response != null) {
+      try {
+        await _storage.saveToken(response['access_token']);
+        await _storage.setUserData(response['user']);
         Get.offAllNamed(AppRoutes.home);
-      } else {
-        Get.snackbar('错误', '验证失败');
+      } catch (e) {
+        setError('登录成功但保存用户信息失败');
       }
-    } catch (e) {
-      Get.snackbar('错误', '验证失败: $e');
-    } finally {
-      isLoading.value = false;
     }
   }
 
+  // 验证码输入处理
   void onCodeChanged(String value) {
-    verificationCode.value = value;
+    code.value = value;
     if (value.length == 6) {
-      verifyCode();
+      handleLogin();
     }
+  }
+
+  // 倒计时处理
+  void startCountDown() {
+    countDown.value = 0;
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(seconds: 1));
+      if (countDown.value >= 60) return false;
+      countDown.value++;
+      return true;
+    });
+  }
+
+  // 重置所有状态
+  void resetAll() {
+    email.value = '';
+    code.value = '';
+    currentStep.value = 0;
+    countDown.value = 60;
+    resetState();
+  }
+
+  @override
+  void onClose() {
+    resetAll();
+    super.onClose();
   }
 }

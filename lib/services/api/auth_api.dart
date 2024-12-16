@@ -5,34 +5,21 @@ import 'package:flutter/cupertino.dart';
 class AuthApi {
   final _dio = DioClient.instance;
 
-  Future<bool> sendVerificationCode(String email) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/api/user/getSigninCaptcha',
-        data: {
-          'email': email,
-        },
-      );
-
-      debugPrint('响应数据: $response');
-
-      return false;
-    } catch (e) {
-      return false;
-    }
+  Future<bool?> sendCodeWithEmail(String email) async {
+    return await _dio.post<bool>(
+      '/api/auth/email/code',
+      data: {'email': email, 'type': 'login'},
+    );
   }
 
-  Future<Map<String, dynamic>?> verifyCode(String email, String code) async {
-    try {
-      return await _dio.post<Map<String, dynamic>>(
-        '/auth/verify',
-        data: {
-          'email': email,
-          'code': code,
-        },
-      );
-    } catch (e) {
-      return null;
-    }
+  Future<Map<String, dynamic>?> loginWithEmail(
+      String email, String code) async {
+    return await _dio.post<Map<String, dynamic>>(
+      '/api/auth/login/email',
+      data: {
+        'email': email,
+        'code': code,
+      },
+    );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import '../pages/auth/login.dart';
-import '../pages/auth/verification.dart';
-import '../pages/main/index.dart';
+import '../screen/auth/login.dart';
+import '../screen/auth/verification.dart';
+import '../screen/main/index.dart';
 
 // 导入路由配置文件，包含所有路由常量定义
 part 'index.dart';
@@ -12,11 +12,11 @@ class AppPages {
   static final routes = [
     GetPage(
       name: AppRoutes.login,
-      page: () => const LoginView(),
+      page: () => const LoginScreen(),
     ),
     GetPage(
       name: AppRoutes.verification,
-      page: () => const VerificationView(),
+      page: () => const VerificationScreen(),
     ),
     GetPage(
       name: AppRoutes.home,

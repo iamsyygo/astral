@@ -1,17 +1,51 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart' hide Response;
+import '../models/api_response.dart';
 
 /// 错误处理拦截器
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     String message = _getErrorMessage(err);
-    final newError = DioException(
+    final responseData = err.response?.data;
+
+    DioException error = DioException(
       requestOptions: err.requestOptions,
       error: message,
       type: err.type,
       response: err.response,
     );
-    handler.next(newError);
+
+    if (responseData != null && responseData is Map<String, dynamic>) {
+      // 请求失败的错误，直接 resolve，返回业务数据自行处理
+
+      final data = ApiResponse.fromJson(responseData);
+
+      Response response = Response(
+        requestOptions: err.requestOptions,
+        data: data.bizdata,
+        statusCode: err.response?.statusCode ?? 0,
+        statusMessage: err.response?.statusMessage ?? '',
+      );
+
+      Get.snackbar(
+        '错误',
+        data.message,
+        icon: const Icon(CupertinoIcons.xmark_circle,
+            color: CupertinoColors.systemRed),
+      );
+
+      // 进行 resolve 操作
+      handler.resolve(response);
+
+      // error.response?.data = data.bizdata;
+      return;
+    }
+
+    handler.next(error);
   }
 
   String _getErrorMessage(DioException err) {

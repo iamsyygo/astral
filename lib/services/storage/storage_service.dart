@@ -26,4 +26,16 @@ class StorageService extends GetxService {
   Future<void> clearToken() async {
     await _box.remove('token');
   }
+
+  Future<void> setUserData(Map<String, dynamic> userData) async {
+    await _box.write('userData', userData);
+  }
+
+  Map<String, dynamic>? getUserData() {
+    return _box.read('userData');
+  }
+
+  Future<void> clearUserData() async {
+    await _box.remove('userData');
+  }
 }

@@ -7,20 +7,20 @@ class ResponseInterceptor extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // 统一处理响应
     if (response.data != null && response.data is Map<String, dynamic>) {
-      final apiResponse = ApiResponse.fromJson(response.data);
+      final responseData = ApiResponse.fromJson(response.data);
 
-      if (!apiResponse.succeed) {
+      if (!responseData.success) {
         final error = DioException(
           requestOptions: response.requestOptions,
           response: response,
           type: DioExceptionType.badResponse,
-          error: apiResponse.message,
+          error: responseData.message,
         );
         return handler.reject(error);
       }
 
       // 只返回业务数据
-      response.data = apiResponse.bizdata;
+      response.data = responseData.bizdata;
     }
 
     handler.next(response);

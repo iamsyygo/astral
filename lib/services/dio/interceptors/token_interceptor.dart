@@ -11,7 +11,8 @@ class TokenInterceptor extends Interceptor {
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
     }
-    super.onRequest(options, handler);
+    // super.onRequest(options, handler);
+    handler.next(options);
   }
 
   @override
@@ -31,7 +32,8 @@ class TokenInterceptor extends Interceptor {
       // });
       // return;
     }
-    super.onError(err, handler);
+    // super.onError(err, handler);
+    handler.next(err);
   }
 
   /// 获取本地存储的 token
