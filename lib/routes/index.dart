@@ -4,8 +4,14 @@
 part of 'pages.dart';
 
 abstract class AppRoutes {
+  static const splash = '/splash';
   static const home = '/home';
-  static const profile = '/profile';
+  static const profile = '/me';
   static const login = '/login';
   static const verification = '/verification';
+  static const about = '/me/about';
+  static const agreement = '/me/about/agreement';
+  static const privacy = '/me/about/privacy';
+  static const contact = '/me/about/contact';
+  static const test = '/test';
 }

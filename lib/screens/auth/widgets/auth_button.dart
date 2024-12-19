@@ -1,3 +1,4 @@
+import 'package:astral/common/theme.dart';
 import 'package:flutter/cupertino.dart';
 
 enum AuthButtonState {
@@ -74,7 +75,7 @@ class _CountdownContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '$seconds秒后可重新发送',
+      '$seconds 秒后可重新发送',
       style: const TextStyle(color: CupertinoColors.white),
     );
   }

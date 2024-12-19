@@ -7,7 +7,7 @@ class AuthApi {
 
   Future<bool?> sendCodeWithEmail(String email) async {
     return await _dio.post<bool>(
-      '/api/auth/email/code',
+      '/api/authorize/code',
       data: {'email': email, 'type': 'login'},
     );
   }
@@ -15,7 +15,7 @@ class AuthApi {
   Future<Map<String, dynamic>?> loginWithEmail(
       String email, String code) async {
     return await _dio.post<Map<String, dynamic>>(
-      '/api/auth/login/email',
+      '/api/authorize/login/email',
       data: {
         'email': email,
         'code': code,

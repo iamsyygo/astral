@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../home/index.dart';
-import '../profile/index.dart';
+import '../me/index.dart';
 import '../../controllers/navigation_controller.dart';
 
 class MainView extends GetView<NavigationController> {

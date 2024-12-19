@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+
 import '../../controllers/login_controller.dart';
 import '../../routes/pages.dart';
 import 'constants/auth_constants.dart';
 import 'mixins/login_animation_mixin.dart';
 import 'widgets/auth_button.dart';
 import 'widgets/brand_logo.dart';
-import 'widgets/auth_error_message.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen>
   Future<void> _handleEmailSubmit() async {
     _emailFocusNode.unfocus();
     await controller.sendEmailCode();
-    if (controller.currentStep.value == 1) {
+    if (controller.isValidEmail == 1) {
       Get.toNamed(AppRoutes.verification);
     }
   }
@@ -63,16 +63,12 @@ class _LoginScreenState extends State<LoginScreen>
           ),
         ),
         const SizedBox(height: 32),
-        Obx(() => AuthErrorMessage(
-              message: controller.errorMessage,
-              onDismiss: controller.resetState,
-            )),
         _buildEmailInput(),
         const SizedBox(height: 24),
         Obx(() => AuthButton(
               onPressed: controller.canSendCode ? _handleEmailSubmit : null,
               isLoading: controller.state.isLoading,
-              countDown: controller.countDown.value,
+              countDown: controller.loginState.countDown,
             )),
       ],
     );
@@ -83,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen>
       focusNode: _emailFocusNode,
       placeholder: '您的邮箱地址',
       padding: const EdgeInsets.all(AuthConstants.inputPadding),
-      onChanged: (value) => controller.email.value = value,
+      onChanged: (value) => controller.updateEmail(value),
       keyboardType: TextInputType.emailAddress,
       decoration: BoxDecoration(
         color: CupertinoColors.systemGrey6,
