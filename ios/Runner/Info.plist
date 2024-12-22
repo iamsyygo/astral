@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- 基础配置 -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -24,16 +25,22 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	
+	<!-- 启动屏和主界面配置 -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	
+	<!-- 支持的设备方向 -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
+	<!-- iPad支持的设备方向 -->
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -41,15 +48,71 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
+	<!-- 系统配置 -->
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- 隐私权限配置 -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要访问相册以选择视频文件</string>
 	<key>NSCameraUsageDescription</key>
 	<string>需要访问相机以拍摄视频</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>需要访问麦克风以录制视频</string>
+	
+	<!-- 网络访问权限 -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>需要访问本地网络以连接服务</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+		<string>_bonjour._tcp</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>需要访问位置信息以获取网络服务</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>需要访问位置信息以获取网络服务</string>
+	
+	<!-- 网络安全配置 -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- 允许任意HTTP连接 -->
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<!-- 允许本地网络访问 -->
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<!-- 允许不安全的HTTP加载 -->
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<!-- 例外域名列表 -->
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<!-- 允许本地服务器不安全的HTTP加载 -->
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<!-- 包含子域名 -->
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<!-- 添加开发服务器地址 -->
+			<key>192.168.99.107</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSExceptionMinimumTLSVersion</key>
+				<string>TLSv1.0</string>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
 </dict>
 </plist>

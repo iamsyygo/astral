@@ -1,4 +1,4 @@
-import 'package:astral/services/dio/interceptors/log_interceptor.dart';
+import 'package:astral/services/network/interceptors/log_interceptor.dart';
 import 'package:dio/dio.dart';
 
 import 'config/api_config.dart';

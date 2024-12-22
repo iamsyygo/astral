@@ -1,5 +1,5 @@
+import 'package:astral/models/api_response_models.dart';
 import 'package:dio/dio.dart';
-import '../models/api_response.dart';
 
 /// 响应拦截器
 class ResponseInterceptor extends Interceptor {

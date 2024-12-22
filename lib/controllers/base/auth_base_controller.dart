@@ -34,6 +34,8 @@ abstract class AuthBaseController extends GetxController {
     } catch (e) {
       setError(e.toString());
       return null;
+    } finally {
+      setLoading();
     }
   }
 }

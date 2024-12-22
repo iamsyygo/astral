@@ -7,12 +7,13 @@ import '../screens/main/index.dart';
 import '../screens/me/pages/agreement_screen.dart';
 import '../screens/me/pages/privacy_screen.dart';
 import '../screens/me/pages/contact_screen.dart';
+import '../screens/me/pages/security_screen.dart';
 
 // 导入路由配置文件，包含所有路由常量定义
 part 'index.dart';
 
 class AppPages {
-  static const initial = AppRoutes.login;
+  static const initial = AppRoutes.about;
   // static const initial = AppRoutes.test;
 
   static final routes = [
@@ -47,6 +48,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.contact,
       page: () => const ContactScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.security,
+      page: () => const SecurityScreen(),
     ),
   ];
 }

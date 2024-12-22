@@ -1,5 +1,3 @@
-/// API 响应模型
-/// 用于统一处理后端返回的数据格式
 class ApiResponse<T> {
   final int code;
   final T? bizdata;
@@ -17,7 +15,7 @@ class ApiResponse<T> {
     required this.success,
   });
 
-  /// 从 JSON 创建响应对象
+  /// 将 json 转换为 ApiResponse 对象
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
     return ApiResponse(
       code: json['code'] as int,
@@ -28,4 +26,14 @@ class ApiResponse<T> {
       success: json['success'] as bool,
     );
   }
+
+  /// 将 ApiResponse 对象转换为 json
+  Map<String, dynamic> toJson() => {
+        'code': code,
+        'bizdata': bizdata,
+        'message': message,
+        'timestamp': timestamp,
+        'uri': uri,
+        'success': success,
+      };
 }

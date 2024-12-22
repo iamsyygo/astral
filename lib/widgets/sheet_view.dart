@@ -4,25 +4,38 @@ class SheetView extends StatelessWidget {
   final List<Widget> children;
   final Color? background;
   final BorderRadiusGeometry borderRadius;
+  final String? title;
 
   const SheetView(
       {super.key,
       required this.children,
       this.background = Colors.white,
-      this.borderRadius = const BorderRadius.all(Radius.circular(12.0))});
+      this.borderRadius = const BorderRadius.all(Radius.circular(12.0)),
+      this.title});
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          color: background,
-          borderRadius: borderRadius,
-        ),
-        child: Column(
-          children: children,
-        ),
+      child: Column(
+        children: [
+          if (title != null)
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 8, bottom: 4),
+              child: Text(title!,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            ),
+          Container(
+            decoration: BoxDecoration(
+              color: background,
+              borderRadius: borderRadius,
+            ),
+            child: Column(
+              children: children,
+            ),
+          ),
+        ],
       ),
     );
   }

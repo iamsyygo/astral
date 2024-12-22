@@ -1,6 +1,4 @@
-import 'package:astral/services/dio/dio_client.dart';
-import 'package:astral/services/dio/models/api_response.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:astral/services/network/dio_client.dart';
 
 class AuthApi {
   final _dio = DioClient.instance;

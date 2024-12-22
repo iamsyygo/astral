@@ -1,4 +1,4 @@
-import 'package:astral/common/theme.dart';
+import 'package:astral/common/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 enum AuthButtonState {

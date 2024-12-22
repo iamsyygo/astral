@@ -1,8 +1,7 @@
+import 'package:astral/models/api_response_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart' hide Response;
-
-import '../models/api_response.dart';
 
 /// 错误处理拦截器
 class ErrorInterceptor extends Interceptor {
